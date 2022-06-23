@@ -1,10 +1,117 @@
 #include <iostream>
 #include <cstdio>
-
+#include <conio.h>
+#include <iostream>
+#include <stdio.h>
 
 using namespace std; 
 
-int menu(); 
+typedef struct nodo{
+	int dato;
+   	struct nodo *izq, *dere, *padre;
+   	int fe, alturaIzq, alturaDere;
+   	
+	char nombre[50];
+	char apellido[50];
+	char direccion[150];
+	
+}arbol, *parbol;
+
+
+int sw=0; // Si es 1= insertar, 0=fe 
+
+arbol *raiz, *nuevo, *recorrer; //Crea las estructuras de tipo puntero.
+int buscado=0; //Variable para guardar un valor buscado
+arbol *PadreAB, *sHijo, *predecesor, *abuelo, *hijoHijo;
+
+//Recorridos pre, in, post
+void preorden(arbol *recorrer);
+void inorden(arbol *recorrer);
+void postorden(arbol *recorrer);
+void insertarNuevo(arbol *recorrer, arbol *nuevo, arbol *padre);
+void agregarDatos();
+int exiteenArbol(arbol *recorrer, int buscado);
+void verArbol(arbol recorrer, int n);
+void graficarArbol(arbol, int, int);
+void dibujarCuadro(int,int,int,int);
+void eliminarNodo(arbol *recorrer, int buscado);
+void estadoFactorEquilibrio(arbol *recorrer);
+void necesidadEquilibrar(arbol *recorrer);
+void vaciarArbol(arbol *recorrer);
+
+//funciones que reestructuran el árbol
+void rotarII();
+void rotarDD();
+void rotarID();
+void rotarDI();
+
+parbol nuevoNodo();
+
+//Variable "nuevo" almacenará una nueva hoja para el árbol.
+parbol nuevoNodo(){	
+	nuevo = new (arbol); //Crea la reserva de espacio en memoria.
+	cout<<"Ingrese su NIT: "; cin>>nuevo->dato;
+	cout<<"Ingrese su Nombre: "; cin>>nuevo->nombre;
+	cout<<"Ingrese su Apellido: "; cin>>nuevo->apellido;
+	cout<<"Ingrese su direccion: "; cin>>nuevo->direccion;
+	
+	
+	nuevo->izq=NULL; //Punteros a tierra
+	nuevo->dere=NULL; //Punteros a tierra
+	nuevo->alturaIzq=0; //Setea en cero la altura izquierda el nodo
+	nuevo->alturaDere=0; //Setea en cero la altura derecha el nodo
+	nuevo->fe= nuevo->alturaDere-nuevo->alturaIzq; //Calculo del factor equilibrio, podría asignarse el valor cero desde la entrada.
+	
+	return nuevo;
+}
+
+
+
+void agregarDatos(){
+	system("cls");
+	int x;
+	cout<<"Cuantos elementos desea insertar? ";cin>>x;
+	for (int i=1; i<=x;i++){
+		cout<<"\nIngrese registro "<<i<<endl;
+		recorrer=raiz; //Se apunta a recorrer en al mismo nodo donde apunta la raíz
+		nuevo=nuevoNodo(); //Almacena el nuevo nodo para luego insertarlo en el arbol.
+		
+		if (nuevo->dato!=0){
+			if (exiteenArbol(recorrer, nuevo->dato)==1){ //Evalua si el nodo ya existe en el arbol.
+				PadreAB=raiz;
+				insertarNuevo(recorrer, nuevo, PadreAB);
+					
+				//BBaltura(recorrer);
+				//BBnecesidadEquilibrar(recorrer);
+			}else{
+				cout<<"El numero ya existe en el arbol"<<endl;
+				getch();
+			}
+		}else{
+			vaciarArbol(raiz);
+			system("cls");
+			verArbol(raiz, 0);
+			cout<<"El arbol ha sido eliminado porque ingreso el numero cero "<<endl;
+			getch();
+			i=x;
+			return;
+		}
+		
+		verArbol(raiz,0);
+	}
+}
+
+void dibujarCuadro(int x1,int y1,int x2,int y2){
+    int i;
+    for (i=x1+1;i<x2;i++){
+        gotoxy(i,y1); cputs("-") ;//linea horizontal superior
+        gotoxy(i,y2); cprintf("-") ;//linea horizontal inferior
+    }
+    for (i=y1+1;i<y2;i++){
+        gotoxy(x1,i); cprintf("|") ;//linea vertical izquierda
+        gotoxy(x2,i); cprintf("|") ;//linea vertical derecha
+    }
+}
 
 void intro(){
 	clrscr();//limpia TODA LA pantalla
@@ -131,26 +238,6 @@ int main(){
 	return 0;
 }
 
-
-int menu(){
-	int opcion = 0; 
-	while (opcion != 4){
-		cout << "--------MENU--------" <<endl;
-		cout << " 1) Insertar al arbol AVL "<<endl;
-		cout << " 2) Eliminar del arbol AVL " <<endl; 
-		cout << " 3) Imprimir arbol AVL " <<endl; 
-		cout << " 4) Salir. " <<endl; 
-		cout << "---------------------" <<endl; 
-		cout << " Ingrese la opcion: " <<endl; 
-		cin>> opcion; 
-		if (opcion == 4){
-			cout << "Ha elegido salir del sistema. " <<endl; 
-		}else if (opcion > 0 && opcion < 4){
-			break; 
-		}
-	}
-	return opcion; 
-}
 
 
 
