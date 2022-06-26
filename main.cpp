@@ -622,7 +622,7 @@ int main(){
     gotoxy(3,18);cout << "Presione cualquier tecla para continuar...";
     getch();
 	int opcion;
-	while (opcion!=11){
+	while (opcion!=9){
 		system("cls");
 		cout<<"************************** MENU **************************\n\n";
 		cout<<"1.  Ingresar elemento\n";
@@ -633,7 +633,7 @@ int main(){
 		cout<<"6.  IMPRIMIR Altura del arbol\n";
 		cout<<"7.  Eliminar elemento\n";
 		cout<<"8.  Vaciar el arbol\n";
-		cout<<"9. Salir\n";
+		cout<<"9.  Salir\n";
 		cout<<"Ingrese una opcion" <<endl;
 		cin>>opcion;
 		
