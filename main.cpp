@@ -45,7 +45,7 @@ parbol nuevoNodo();
 //Variable "nuevo" almacenará una nueva hoja para el árbol.
 parbol nuevoNodo(){	
 	nuevo = new (arbol); //Crea la reserva de espacio en memoria.
-	cout<<"Ingrese el valor del elemento: "; 
+	cout<<"Ingrese el valor del elemento: "<<endl; 
 	cin>>nuevo->dato;
 	nuevo->izq=NULL; //Punteros a tierra
 	nuevo->dere=NULL; //Punteros a tierra
@@ -115,10 +115,7 @@ void preorden(arbol *recorrer){
 void inorden(arbol *recorrer){
   	if (recorrer != NULL) {
     	inorden(recorrer->izq);
-    	cout<<"\nNIT: "<<recorrer->dato<<endl;
-		cout<<"Nombre: "<<recorrer->nombre<<endl;
-		cout<<"Apellido: "<<recorrer->apellido<<endl;
-		cout<<"Direccion: "<<recorrer->direccion<<endl;
+    	cout<<"\nElemento: "<<recorrer->dato<<endl;
     	inorden(recorrer->dere);
   	}
 }
@@ -128,10 +125,7 @@ void postorden(arbol *recorrer){
   	if (recorrer != NULL) {
     	postorden(recorrer->izq);
     	postorden(recorrer->dere);
-    	cout<<"\nNIT: "<<recorrer->dato<<endl;
-		cout<<"Nombre: "<<recorrer->nombre<<endl;
-		cout<<"Apellido: "<<recorrer->apellido<<endl;
-		cout<<"Direccion: "<<recorrer->direccion<<endl;
+    	cout<<"\nElemento: "<<recorrer->dato<<endl;
   	}
 }
 
@@ -160,40 +154,15 @@ void graficarArbol(arbol *recorrer, int x, int y){
         return;
         
     graficarArbol(recorrer->dere, x+5, y+1);
-    
     gotoxy(x,y); 
-	cout << recorrer->dato << " ";	
+	cout << recorrer->dato;	
 	
     graficarArbol(recorrer->izq, x-5, y+1);
-    
+    //gotoxy(x-1,y-1);
+    //cout << "\\"; 
 }
 
 int existeNodo=0; //Si es 0 no existe, y si es 1 si existe.
-
-int buscarDato(arbol *recorrer, int buscado){
-	if (recorrer==NULL){
-		cout<<"Arbol Vacio o el nodo no existe"<<endl;
-	}else{
-		if(buscado<recorrer->dato){
-			buscarDato(recorrer->izq, buscado);
-		}else if (buscado>recorrer->dato){
-			buscarDato(recorrer->dere, buscado);
-		}else{
-			existeNodo=1;
-			PadreAB=recorrer->padre;
-			//ABBcout<<"Padre: "<<PadreAB->dato<<" Nodo buscado: "<<recorrer->dato<<endl;
-			cout<<"\n\nEl nodo SI existe"<<endl;
-			cout<<"NIT: "<<recorrer->dato<<endl;
-			cout<<"Nombre: "<<recorrer->nombre<<endl;
-			cout<<"Apellido: "<<recorrer->apellido<<endl;
-			cout<<"Direccion: "<<recorrer->direccion<<endl;
-			
-			
-			return existeNodo;
-		}
-	}
-	return existeNodo; 
-}
 
 //Función que devuelve 0 si el dato existe en un arbol y 1 si no existe.
 //Esta función es utilizada por la función InsertarNuevo para validar que el nodo que se ingresa no existe en el arbol.
@@ -634,14 +603,14 @@ void agregarDatos(){
 			vaciarArbol(raiz);
 			system("cls");
 			//verArbol(raiz, 0);
-			graficarArbol(recorrer, 40, 5); 
+			//graficarArbol(recorrer, 40, 5); 
 			cout<<"El arbol ha sido eliminado porque ingreso el numero cero "<<endl;
 			getch();
 			i=x;
 			return;
 		}
 		
-		verArbol(raiz,0);
+	//graficarArbol(recorrer, 40, 5);
 	}
 }
 
@@ -660,11 +629,11 @@ int main(){
 		cout<<"2.  IMPRIMIR en PreOrden\n";
 		cout<<"3.  IMPRIMIR en InOrden\n";
 		cout<<"4.  IMPRIMIR en PostOrden\n";
-		cout<<"6.  Graficar Arbol - Normal\n";
-		cout<<"7.  IMPRIMIR Altura del arbol\n";
-		cout<<"8.  Eliminar elemento\n";
-		cout<<"9. Vaciar el arbol\n";
-		cout<<"10. Salir\n";
+		cout<<"5.  Graficar Arbol\n";
+		cout<<"6.  IMPRIMIR Altura del arbol\n";
+		cout<<"7.  Eliminar elemento\n";
+		cout<<"8.  Vaciar el arbol\n";
+		cout<<"9. Salir\n";
 		cout<<"Ingrese una opcion" <<endl;
 		cin>>opcion;
 		
@@ -713,17 +682,11 @@ int main(){
 				getch();
 				break;
 			case 8:
-				cout<<"Nodo a buscar: ";
-				cin>>buscado;
-				buscarDato(recorrer, buscado);
-				getch();
-				break;
-			case 9:
 				cout <<"Vaciar Arbol"<<endl;
 				vaciarArbol(recorrer);
 				getch();
 				break;
-			case 10:
+			case 9:
 				break;
 			default:
 				cout<<"Opcion invalida, ingrese una opcion nuevamente. ";
