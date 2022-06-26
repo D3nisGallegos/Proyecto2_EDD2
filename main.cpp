@@ -11,9 +11,9 @@ typedef struct nodo{
    	struct nodo *izq, *dere, *padre;
    	int fe, alturaIzq, alturaDere;
    	
-	char nombre[50];
-	char apellido[50];
-	char direccion[150];
+	char nombre [50];
+	char apellido [50];
+	char direccion [150];
 	
 }arbol, *parbol;
 
@@ -30,7 +30,7 @@ void inorden(arbol *recorrer);
 void postorden(arbol *recorrer);
 void insertarNuevo(arbol *recorrer, arbol *nuevo, arbol *padre);
 void agregarDatos();
-int exiteenArbol(arbol *recorrer, int buscado);
+int exiteenArbol(arbol *recorrer, int buscado, int final);
 void verArbol(arbol recorrer, int n);
 void graficarArbol(arbol, int, int);
 void dibujarCuadro(int,int,int,int);
@@ -63,6 +63,13 @@ parbol nuevoNodo(){
 	nuevo->fe= nuevo->alturaDere-nuevo->alturaIzq; //Calculo del factor equilibrio, podría asignarse el valor cero desde la entrada.
 	
 	return nuevo;
+}
+
+void gotoxy(int x, int y) {
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 void insertarNuevo(arbol *recorrer, arbol *nuevo, arbol *PadreAB){
@@ -180,7 +187,8 @@ void graficarArbol(arbol *recorrer, int x, int y){
         
     graficarArbol(recorrer->dere, x+5, y+1);
     
-    gotoxy(x,y); cprintf("%d", recorrer->dato);	
+    gotoxy(x,y); 
+	cout << recorrer->dato << " ";	
 	
     graficarArbol(recorrer->izq, x-5, y+1);
     
@@ -221,12 +229,12 @@ int exiteenArbol(arbol *recorrer, int buscado, int final){
 		return final;
 	}else{
 		if(buscado<recorrer->dato){
-			exiteenArbol(recorrer->izq, buscado);
+			exiteenArbol(recorrer->izq, buscado, final);
 		}else if (buscado>recorrer->dato){
-			exiteenArbol(recorrer->dere, buscado);
+			exiteenArbol(recorrer->dere, buscado, final);
 		}else{
 			final = 0;
-			return final;
+			return 0;
 		}
 	}
 	return final; 
@@ -642,7 +650,8 @@ void dibujarCuadro(int x1,int y1,int x2,int y2){
 void agregarDatos(){
 	system("cls");
 	int x;
-	cout<<"Cuantos elementos desea insertar? ";cin>>x;
+	cout<<"Cuantos elementos desea insertar? ";
+	cin>>x;
 	for (int i=1; i<=x;i++){
 		cout<<"\nIngrese registro "<<i<<endl;
 		recorrer=raiz; //Se apunta a recorrer en al mismo nodo donde apunta la raíz
@@ -701,11 +710,11 @@ void intro(){
 */
 int main(){
 	//intro();
-    //gotoxy(3,7);cprintf("Estructura de Datos II");
-    //gotoxy(3,9);cprintf("Ingeniero Miguel Zepeda");
-    //gotoxy(3,11);cprintf("GRUPO: Denis Gallegos, Bonieth Ramirez");
-    //gotoxy(3,18);cprintf("Presione cualquier tecla para continuar...");
-    //getch();
+    gotoxy(3,7);cout <<"Estructura de Datos II";
+    gotoxy(3,9);cout <<"Ingeniero Juan Zepeda";
+    gotoxy(3,11);cout <<"GRUPO: Denis Gallegos 11951011, Bonieth Ramirez ";
+    gotoxy(3,18);cout << "Presione cualquier tecla para continuar...";
+    getch();
     //clrscr();
 	int opcion;
 	while (opcion!=11){
@@ -754,7 +763,8 @@ int main(){
 				break;
 			case 6:
 				system("cls");
-				gotoxy(25,2);cprintf("------------ARBOL AVL---------");
+				gotoxy(25,2);
+				cout<<"------------ARBOL AVL---------";
 				//cout<<"____________ARBOL AVL__________"<<endl;
 				graficarArbol(recorrer, 40, 5);
 				getch();
@@ -764,7 +774,8 @@ int main(){
 				getch();
 				break;
 			case 8:
-				cout<<"Ingrese el elemento a eliminar: ";cin>>buscado;
+				cout<<"Ingrese el elemento a eliminar: ";
+				cin>>buscado;
 				arbolVacio(recorrer, buscado); //Evalua si existe, luego procede a eliminar.
 				recorrer=raiz; //Volver a asinar a recorrer el puntero raiz
 				//BBaltura(recorrer); //Evaluar nuevamente la altura del arbol
@@ -774,7 +785,8 @@ int main(){
 				getch();
 				break;
 			case 9:
-				cout<<"Nodo a buscar: ";cin>>buscado;
+				cout<<"Nodo a buscar: ";
+				cin>>buscado;
 				buscarDato(recorrer, buscado);
 				getch();
 				break;
@@ -793,7 +805,7 @@ int main(){
 	}
 	
 	//intro();
-	cprintf("PROGRAMA FINALIZADO");
+	cout<<"PROGRAMA FINALIZADO"<<endl;
     
 	return 0;
 }
