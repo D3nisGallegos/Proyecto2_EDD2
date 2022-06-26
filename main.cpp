@@ -675,9 +675,6 @@ int main(){
 				cin>>buscado;
 				arbolVacio(recorrer, buscado); //Evalua si existe, luego procede a eliminar.
 				recorrer=raiz; //Volver a asinar a recorrer el puntero raiz
-				//BBaltura(recorrer); //Evaluar nuevamente la altura del arbol
-				//BBrecorrer=raiz; //Volver a asinar a recorrer el puntero raiz
-				//BBnecesidadEquilibrar(recorrer); //Evaluar si es necesario equilibrarlo
 				cout<< "Hecho" <<endl;
 				getch();
 				break;
