@@ -6,14 +6,12 @@
 
 using namespace std; 
 
+
 typedef struct nodo{
 	int dato;
    	struct nodo *izq, *dere, *padre;
    	int fe, alturaIzq, alturaDere;
    	
-	char nombre [50];
-	char apellido [50];
-	char direccion [150];
 	
 }arbol, *parbol;
 
@@ -24,22 +22,19 @@ arbol *raiz, *nuevo, *recorrer; //Crea las estructuras de tipo puntero.
 int buscado=0; //Variable para guardar un valor buscado
 arbol *PadreAB, *sHijo, *predecesor, *abuelo, *hijoHijo;
 
-//Recorridos pre, in, post
 void preorden(arbol *recorrer);
 void inorden(arbol *recorrer);
 void postorden(arbol *recorrer);
 void insertarNuevo(arbol *recorrer, arbol *nuevo, arbol *padre);
 void agregarDatos();
-int exiteenArbol(arbol *recorrer, int buscado, int final);
-void verArbol(arbol recorrer, int n);
+int exiteenArbol(arbol *recorrer, int buscado);
 void graficarArbol(arbol, int, int);
-void dibujarCuadro(int,int,int,int);
 void eliminarNodo(arbol *recorrer, int buscado);
 void estadoFactorEquilibrio(arbol *recorrer);
 void necesidadEquilibrar(arbol *recorrer);
 void vaciarArbol(arbol *recorrer);
 
-//funciones que reestructuran el árbol
+//funciones para reestructurar el árbol
 void rotarII();
 void rotarDD();
 void rotarID();
@@ -50,12 +45,8 @@ parbol nuevoNodo();
 //Variable "nuevo" almacenará una nueva hoja para el árbol.
 parbol nuevoNodo(){	
 	nuevo = new (arbol); //Crea la reserva de espacio en memoria.
-	cout<<"Ingrese su NIT: "; cin>>nuevo->dato;
-	cout<<"Ingrese su Nombre: "; cin>>nuevo->nombre;
-	cout<<"Ingrese su Apellido: "; cin>>nuevo->apellido;
-	cout<<"Ingrese su direccion: "; cin>>nuevo->direccion;
-	
-	
+	cout<<"Ingrese el valor del elemento: "; 
+	cin>>nuevo->dato;
 	nuevo->izq=NULL; //Punteros a tierra
 	nuevo->dere=NULL; //Punteros a tierra
 	nuevo->alturaIzq=0; //Setea en cero la altura izquierda el nodo
@@ -114,10 +105,7 @@ void estadoFactorEquilibrio(arbol *recorrer){
 
 void preorden(arbol *recorrer){
 	if (recorrer != NULL) {
-		cout<<"\nNIT: "<<recorrer->dato<<endl;
-		cout<<"Nombre: "<<recorrer->nombre<<endl;
-		cout<<"Apellido: "<<recorrer->apellido<<endl;
-		cout<<"Direccion: "<<recorrer->direccion<<endl;
+		cout<<"\nValor del elemento: "<<recorrer->dato<<endl;
 	    preorden(recorrer->izq);
 	    preorden(recorrer->dere);
 	}
@@ -161,22 +149,8 @@ void vaciarArbol(arbol *recorrer){
   	}
 }
 
-void verArbol(arbol *recorrer, int n){
-     if(recorrer==NULL)
-          return;
-     verArbol(recorrer->dere, n+1);
-
-     for(int i=0; i<n; i++)
-         cout<<"   ";
-
-     cout<< recorrer->dato <<endl;
-
-     verArbol(recorrer->izq, n+1);
-}
-
-//Imprime el árbol en horizontal o en su forma normal.
 /*
-Utilizando la librería conio.h se puede indicar la ubicación de cada impresión del nodo.
+En el metodo GRAFICARARBOL se puede indicar la ubicación de cada impresión del nodo.
 Si entra a la derecha suma 5 espacios en X u 1 espacio en Y, inversamente si va hacia la izquierda resta los
 5 espacios en X u 1 espacio en Y.
 */
@@ -222,22 +196,22 @@ int buscarDato(arbol *recorrer, int buscado){
 }
 
 //Función que devuelve 0 si el dato existe en un arbol y 1 si no existe.
-//Esta función es utilizada por la función Insertar para validar que el nodo que se ingresa no existe en el árbol, si no existe deja insertar.
-int exiteenArbol(arbol *recorrer, int buscado, int final){
+//Esta función es utilizada por la función InsertarNuevo para validar que el nodo que se ingresa no existe en el arbol.
+int exiteenArbol(arbol *recorrer, int buscado){
 	if (recorrer==NULL){
-		final = 1;
-		return final;
+		//final = 1;
+		return 1;
 	}else{
 		if(buscado<recorrer->dato){
-			exiteenArbol(recorrer->izq, buscado, final);
+			exiteenArbol(recorrer->izq, buscado);
 		}else if (buscado>recorrer->dato){
-			exiteenArbol(recorrer->dere, buscado, final);
+			exiteenArbol(recorrer->dere, buscado);
 		}else{
-			final = 0;
+			//final = 0;
 			return 0;
 		}
 	}
-	return final; 
+	//return final; 
 }
 
 //Analizar si el arbol no está vacío y si el nodo a eliminar no es la raíz. 
@@ -634,31 +608,19 @@ void rotarII(){
 		PadreAB->izq=NULL;
 	}	
 }
-/*
-void dibujarCuadro(int x1,int y1,int x2,int y2){
-    int i;
-    for (i=x1+1;i<x2;i++){
-        gotoxy(i,y1); cputs("-") ;//linea horizontal superior
-        gotoxy(i,y2); cprintf("-") ;//linea horizontal inferior
-    }
-    for (i=y1+1;i<y2;i++){
-        gotoxy(x1,i); cprintf("|") ;//linea vertical izquierda
-        gotoxy(x2,i); cprintf("|") ;//linea vertical derecha
-    }
-}
-*/
+
 void agregarDatos(){
 	system("cls");
 	int x;
 	cout<<"Cuantos elementos desea insertar? ";
 	cin>>x;
 	for (int i=1; i<=x;i++){
-		cout<<"\nIngrese registro "<<i<<endl;
+		cout<<"\nIngrese informacion para el elemento: "<<i<<endl;
 		recorrer=raiz; //Se apunta a recorrer en al mismo nodo donde apunta la raíz
 		nuevo=nuevoNodo(); //Almacena el nuevo nodo para luego insertarlo en el arbol.
 		
 		if (nuevo->dato!=0){
-			if (exiteenArbol(recorrer, nuevo->dato, 0)==1){ //Evalua si el nodo ya existe en el arbol.
+			if (exiteenArbol(recorrer, nuevo->dato)==1){ //Evalua si el nodo ya existe en el arbol.
 				PadreAB=raiz;
 				insertarNuevo(recorrer, nuevo, PadreAB);
 					
@@ -671,7 +633,8 @@ void agregarDatos(){
 		}else{
 			vaciarArbol(raiz);
 			system("cls");
-			verArbol(raiz, 0);
+			//verArbol(raiz, 0);
+			graficarArbol(recorrer, 40, 5); 
 			cout<<"El arbol ha sido eliminado porque ingreso el numero cero "<<endl;
 			getch();
 			i=x;
@@ -681,41 +644,14 @@ void agregarDatos(){
 		verArbol(raiz,0);
 	}
 }
-/*
-void intro(){
-	clrscr();//limpia TODA LA pantalla
- 
-    //crea una ventana COMPLETA de fondo azul claro
-    window(1,1,80,25);
-    textbackground(LIGHTBLUE);//fondo de la pantalla AZUL CLARO
-    clrscr();
- 
-    //Ventana de fondo o sombra NEGRA
-    window(4,4,79,24);//crea una ventana en estar cordenadas
-    textbackground(BLACK);
-    clrscr();
- 
-    //ventana principal donde se solicitan datos
-    window(2,2,77,22);//crea una ventana en estar cordenadas
-    textbackground(GREEN);//fondo de la pantalla verde
-    textcolor(YELLOW);//color de la letra amarillo
-    clrscr();
-    dibujarCuadro(1,1,75,21);//Cuadro grande
-    dibujarCuadro(3,3,73,5);//Cuadro titulo
-    gotoxy(16,4);
-    textcolor(WHITE);//establece el color de fondo en blanco
 
-    return;
-}
-*/
+
 int main(){
-	//intro();
     gotoxy(3,7);cout <<"Estructura de Datos II";
     gotoxy(3,9);cout <<"Ingeniero Juan Zepeda";
-    gotoxy(3,11);cout <<"GRUPO: Denis Gallegos 11951011, Bonieth Ramirez ";
+    gotoxy(3,11);cout <<"GRUPO: Denis Gallegos 11951011, Bonieth Ramirez 11921012";
     gotoxy(3,18);cout << "Presione cualquier tecla para continuar...";
     getch();
-    //clrscr();
 	int opcion;
 	while (opcion!=11){
 		system("cls");
@@ -724,14 +660,12 @@ int main(){
 		cout<<"2.  IMPRIMIR en PreOrden\n";
 		cout<<"3.  IMPRIMIR en InOrden\n";
 		cout<<"4.  IMPRIMIR en PostOrden\n";
-		cout<<"5.  Graficar Arbol - Rotado 90 grados\n";
 		cout<<"6.  Graficar Arbol - Normal\n";
 		cout<<"7.  IMPRIMIR Altura del arbol\n";
 		cout<<"8.  Eliminar elemento\n";
-		cout<<"9.  Buscar elemento\n";
-		cout<<"10. Vaciar el arbol\n";
-		cout<<"11. Salir\n";
-		cout<<"Ingrese una opcion\n";
+		cout<<"9. Vaciar el arbol\n";
+		cout<<"10. Salir\n";
+		cout<<"Ingrese una opcion" <<endl;
 		cin>>opcion;
 		
 		recorrer=raiz;
@@ -757,23 +691,17 @@ int main(){
 				break;
 			case 5:
 				system("cls");
-				cout<<"------------ARBOL AVL - ROTADO 90 GRADOS A LA IZQUIERDA---------"<<endl;
-				verArbol(recorrer, 0);
-				getch();
-				break;
-			case 6:
-				system("cls");
 				gotoxy(25,2);
 				cout<<"------------ARBOL AVL---------";
 				//cout<<"____________ARBOL AVL__________"<<endl;
 				graficarArbol(recorrer, 40, 5);
 				getch();
 				break;
-			case 7:
+			case 6:
 				cout<<"La Altura del arbol es: "<<altura(recorrer)<<endl;
 				getch();
 				break;
-			case 8:
+			case 7:
 				cout<<"Ingrese el elemento a eliminar: ";
 				cin>>buscado;
 				arbolVacio(recorrer, buscado); //Evalua si existe, luego procede a eliminar.
@@ -781,30 +709,28 @@ int main(){
 				//BBaltura(recorrer); //Evaluar nuevamente la altura del arbol
 				//BBrecorrer=raiz; //Volver a asinar a recorrer el puntero raiz
 				//BBnecesidadEquilibrar(recorrer); //Evaluar si es necesario equilibrarlo
-				cout<<"\nHecho";
+				cout<< "Hecho" <<endl;
 				getch();
 				break;
-			case 9:
+			case 8:
 				cout<<"Nodo a buscar: ";
 				cin>>buscado;
 				buscarDato(recorrer, buscado);
 				getch();
 				break;
-			case 10:
+			case 9:
 				cout <<"Vaciar Arbol"<<endl;
 				vaciarArbol(recorrer);
-				
 				getch();
 				break;
-			case 11:
+			case 10:
 				break;
 			default:
-				cout<<"No es una opcion correcta";
+				cout<<"Opcion invalida, ingrese una opcion nuevamente. ";
 				break;
 		}
 	}
 	
-	//intro();
 	cout<<"PROGRAMA FINALIZADO"<<endl;
     
 	return 0;
